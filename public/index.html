@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Z-Hiruira's — Ruina Core</title>
+<meta name="description" content="Ruina Core — AI conversational engine milik Z-Hiruira's. Live chat, endpoint publik, dan profil developer di satu tempat." />
+<meta name="theme-color" content="#0a0b14" />
+
+<!-- favicon -->
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16.png" />
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+<link rel="icon" href="./assets/favicon.ico" />
+
+<!-- social preview -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Z-Hiruira's — Ruina Core" />
+<meta property="og:description" content="AI conversational engine milik Z-Hiruira's. Coba live chat, endpoint publik, dan kenalan sama developernya." />
+<meta property="og:image" content="./assets/og-image.png" />
+<meta property="og:url" content="https://ruina.z-hiruira.biz.id" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Z-Hiruira's — Ruina Core" />
+<meta name="twitter:description" content="AI conversational engine milik Z-Hiruira's. Coba live chat, endpoint publik, dan kenalan sama developernya." />
+<meta name="twitter:image" content="./assets/og-image.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+<canvas id="bubbleCanvas" aria-hidden="true"></canvas>
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="topbar__brand">
+    <img src="./assets/logo-192.png" alt="Z-Hiruira's logo" class="brand-logo" />
+    <span class="topbar__name">Z-HIRUIRA<span class="apos">'</span>S</span>
+  </div>
+  <nav class="topbar__nav">
+    <a href="#about">tentang</a>
+    <a href="#capabilities">kemampuan</a>
+    <a href="#chat">coba ai</a>
+    <a href="#endpoint">endpoint</a>
+    <a href="#developer">developer</a>
+  </nav>
+  <button class="topbar__cta" id="navChatBtn" type="button">Ngobrol &rarr;</button>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero__grid">
+
+      <div class="hero__intro">
+        <p class="eyebrow"><span class="eyebrow-dot"></span> core status — <span class="eyebrow--live">aktif</span></p>
+        <h1 class="hero__title">
+          Ruina tidak menunggu prompt.<br/>
+          Ruina <span class="hl">menjaga percakapan</span>.
+        </h1>
+        <p class="hero__desc">
+          Inti AI di balik ekosistem Z-Hiruira's — merespons natural, mengingat
+          konteks obrolan, dan bisa kamu ajak ngobrol langsung lewat web ini
+          atau lewat endpoint publiknya sendiri.
+        </p>
+
+        <div class="hero__actions">
+          <a href="#chat" class="btn btn--primary">Coba ngobrol sekarang</a>
+          <a href="#endpoint" class="btn btn--ghost">Lihat endpoint</a>
+        </div>
+
+        <div class="heartbeat" aria-hidden="true">
+          <svg viewBox="0 0 400 60" preserveAspectRatio="none" class="heartbeat__svg">
+            <polyline
+              points="0,30 40,30 55,10 70,50 85,30 120,30 140,30 155,15 165,45 175,30 400,30"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="heartbeat__line"
+            />
+          </svg>
+          <span class="heartbeat__label">sinyal stabil</span>
+        </div>
+      </div>
+
+      <div class="terminal" role="status" aria-live="polite">
+        <div class="terminal__bar">
+          <span class="terminal__dot terminal__dot--a"></span>
+          <span class="terminal__dot terminal__dot--b"></span>
+          <span class="terminal__dot terminal__dot--c"></span>
+          <span class="terminal__title">ruina_core.boot</span>
+        </div>
+        <div class="terminal__body" id="bootLog"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about__media">
+      <div class="thumb-frame">
+        <img src="./assets/Ruina-Thumb.jpeg" alt="Ruina" class="thumb-frame__img" />
+        <span class="thumb-frame__tag">core.visual</span>
+      </div>
+    </div>
+    <div class="about__copy">
+      <p class="eyebrow">log_001 — identitas</p>
+      <h2 class="section-title">Siapa Ruina?</h2>
+      <p class="body-text">
+        Ruina adalah inti dari sistem bot Z-Hiruira's — bagian yang memutuskan
+        kapan harus diam, kapan harus menjawab, dan kapan sebuah percakapan
+        butuh sesuatu yang lebih dari respons template.
+      </p>
+      <p class="body-text">
+        Dibangun untuk terasa seperti lawan bicara yang serba bisa, bukan
+        mesin yang cuma menjalankan perintah — kini juga bisa kamu coba
+        langsung lewat <a href="#chat" class="inline-link">live chat</a> di bawah.
+      </p>
+      <ul class="meta-list">
+        <li><span>codename</span><span>Ruina</span></li>
+        <li><span>peran</span><span>conversational core</span></li>
+        <li><span>status</span><span class="meta-live">online</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="capabilities" id="capabilities">
+    <p class="eyebrow">log_002 — kemampuan</p>
+    <h2 class="section-title">Yang bisa Ruina lakukan</h2>
+
+    <div class="cap-grid">
+      <article class="cap-card">
+        <span class="cap-card__index">ctx</span>
+        <h3>Memahami konteks</h3>
+        <p>Membaca alur obrolan, bukan cuma satu baris pesan terakhir.</p>
+      </article>
+      <article class="cap-card">
+        <span class="cap-card__index">res</span>
+        <h3>Merespons natural</h3>
+        <p>Jawaban yang terasa wajar, disesuaikan dengan nada percakapan.</p>
+      </article>
+      <article class="cap-card">
+        <span class="cap-card__index">api</span>
+        <h3>Endpoint AI <em>live</em></h3>
+        <p>Bisa diakses langsung lewat API, dipasang ke proyek atau bot lain.</p>
+      </article>
+      <article class="cap-card">
+        <span class="cap-card__index">multi</span>
+        <h3>Serba bisa</h3>
+        <p>Dari ngobrol santai, bantu ide, sampai jawab pertanyaan teknis.</p>
+      </article>
+      <article class="cap-card">
+        <span class="cap-card__index">bot</span>
+        <h3>Ramah bot &amp; otomasi</h3>
+        <p>Bentuk respons JSON konsisten, gampang diintegrasikan ke WA bot.</p>
+      </article>
+      <article class="cap-card">
+        <span class="cap-card__index">id</span>
+        <h3>Native Bahasa Indonesia</h3>
+        <p>Ngobrol natural pakai gaya santai khas Indonesia.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- LIVE CHAT -->
+  <section class="chat-section" id="chat">
+    <p class="eyebrow">log_003 — coba langsung</p>
+    <h2 class="section-title">Ngobrol sama Ruina</h2>
+    <p class="body-text">Langsung dari browser kamu — request-nya jalan lewat endpoint <code>/api/ruina</code> yang sama seperti yang dipakai bot.</p>
+
+    <div class="chatbox" id="chatbox">
+      <div class="chatbox__head">
+        <span class="dot dot--pulse-sm"></span>
+        <span>Ruina · online</span>
+      </div>
+      <div class="chatbox__log" id="chatLog">
+        <div class="msg msg--bot">
+          <div class="msg__bubble">Hai! Aku Ruina 👋 Tanya apa aja, aku bakal coba bantu.</div>
+        </div>
+      </div>
+      <form class="chatbox__input" id="chatForm">
+        <input type="text" id="chatInput" placeholder="Tulis pesan ke Ruina..." autocomplete="off" maxlength="600" />
+        <button type="submit" aria-label="Kirim">&rarr;</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ENDPOINT -->
+  <section class="endpoint" id="endpoint">
+    <p class="eyebrow">log_004 — akses publik</p>
+    <h2 class="section-title">Endpoint API</h2>
+    <p class="body-text">Dua endpoint publik, format response konsisten — sekali bikin parser, pakai di mana aja.</p>
+
+    <div class="endpoint-grid">
+      <div class="endpoint__box">
+        <div class="endpoint__tag">POST</div>
+        <h3>/api/ruina</h3>
+        <p class="body-text small">Kirim pesan, dapat balasan dari core Ruina.</p>
+        <div class="code-block">
+          <pre><code>curl -X POST https://ruina.z-hiruira.biz.id/api/ruina \
+  -H "Content-Type: application/json" \
+  -d '{ "message": "halo ruina" }'</code></pre>
+        </div>
+        <div class="code-block code-block--result">
+          <pre><code>{
+  "ok": true,
+  "author": "Z-Hiruira's",
+  "result": { "reply": "Halo! Ada yang bisa dibantu?" },
+  "meta": { "model": "ruina-core" }
+}</code></pre>
+        </div>
+      </div>
+
+      <div class="endpoint__box">
+        <div class="endpoint__tag endpoint__tag--get">GET</div>
+        <h3>/api/developer</h3>
+        <p class="body-text small">Info publik developer di balik Z-Hiruira's — profil, skill, status.</p>
+        <div class="code-block">
+          <pre><code>curl https://ruina.z-hiruira.biz.id/api/developer</code></pre>
+        </div>
+        <div class="code-block code-block--result">
+          <pre><code>{
+  "ok": true,
+  "author": "Z-Hiruira's",
+  "result": { "name": "Z-Hiruira's Developer", "role": "Fullstack & Bot Developer" },
+  "meta": { "status": "active" }
+}</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEVELOPER -->
+  <section class="developer" id="developer">
+    <p class="eyebrow">log_005 — di balik layar</p>
+    <h2 class="section-title">Developer</h2>
+
+    <div class="dev-card">
+      <div class="dev-card__photo">
+        <img src="./assets/Developer-Photo.png" alt="Foto developer" />
+      </div>
+      <div class="dev-card__info">
+        <h3>Z-Hiruira's Developer</h3>
+        <p class="dev-card__role">Fullstack Developer · Bot &amp; AI Integration</p>
+        <p class="body-text">
+          Membangun dan merawat ekosistem Z-Hiruira's — dari landing page,
+          serverless endpoint, sampai integrasi AI seperti Ruina.
+        </p>
+        <div class="skill-tags">
+          <span>JavaScript / Node.js</span>
+          <span>Vercel Serverless</span>
+          <span>REST API Design</span>
+          <span>WhatsApp Bot (Baileys)</span>
+          <span>Prompt Engineering</span>
+          <span>UI / Frontend</span>
+        </div>
+        <p class="caption">* Foto di atas masih placeholder — tinggal diganti lewat <code>assets/Developer-Photo.png</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREDITS -->
+  <section class="credits" id="credits">
+    <p class="eyebrow">log_006 — terima kasih</p>
+    <h2 class="section-title">Credits</h2>
+    <p class="body-text">Z-Hiruira's nggak akan ada tanpa mereka.</p>
+
+    <div class="credits-grid">
+      <div class="credit-chip credit-chip--top">Allah SWT</div>
+      <div class="credit-chip">Family</div>
+      <div class="credit-chip">Merantika Devista</div>
+      <div class="credit-chip">Wolep</div>
+      <div class="credit-chip">Yardan</div>
+      <div class="credit-chip">Kayz</div>
+      <div class="credit-chip">Ghofar</div>
+      <div class="credit-chip credit-chip--muted">dan semua orang yang pernah bantu</div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <span>© <span id="year"></span> Z-Hiruira's</span>
+  <span class="footer__sep">·</span>
+  <span class="dot dot--pulse-sm" aria-hidden="true"></span>
+  <span>ruina core — uptime stabil</span>
+</footer>
+
+<!-- Floating chat FAB -->
+<button class="fab" id="chatFab" aria-label="Buka chat Ruina">
+  <span class="fab__dot"></span>
+  💬
+</button>
+
+<script src="./script.js"></script>
+</body>
+</html>
