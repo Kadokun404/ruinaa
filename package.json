@@ -1,9 +1,0 @@
-{
-  "name": "ruina-core",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Landing page + endpoint AI untuk Ruina, subdomain dari Z-Hiruira.biz.id",
-  "scripts": {
-    "dev": "vercel dev"
-  }
-}
