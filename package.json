@@ -1,0 +1,13 @@
+{
+  "name": "ruina-core",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Landing page + endpoint AI (Ruina) + cloud storage, ekosistem Z-Hiruira's. Statik + serverless functions, deploy ke Vercel.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "vercel dev"
+  }
+}

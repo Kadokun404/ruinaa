@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Donasi — Z-Hiruira's</title>
+<meta name="description" content="Support pengembangan Z-Hiruira's dan Ruina AI."/>
+<meta name="theme-color" content="#0a0b14"/>
+
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="48x48" href="./assets/favicon-48.png"/>
+<link rel="icon" href="./assets/favicon.ico"/>
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png"/>
+
+<meta property="og:title" content="Donasi — Z-Hiruira's"/>
+<meta property="og:description" content="Support pengembangan Z-Hiruira's dan Ruina AI."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="./assets/og-image.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="./assets/og-image.png"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0b14; --surface: #151628; --border: #1e2035;
+    --accent: #7c6dfa; --accent2: #a78bfa; --text: #e8e9f0; --muted: #6b7280;
+    --green: #4ade80; --pink: #f472b6;
+    --font: 'Outfit', sans-serif; --mono: 'JetBrains Mono', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem; background: rgba(10,11,20,0.9); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-brand { font-weight: 800; font-size: 1rem; letter-spacing: 0.08em; color: var(--text); text-decoration: none; }
+  .nav-brand span { color: var(--accent); }
+  .nav-back { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+  .nav-back:hover { color: var(--text); }
+  .nav-links { display: flex; gap: 1.25rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  main { padding: 5rem 2rem 4rem; max-width: 700px; margin: 0 auto; }
+
+  .eyebrow { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+
+  .page-header { text-align: center; margin-bottom: 3.5rem; }
+  .page-header h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; margin-bottom: 1rem; }
+  .page-header h1 em { font-style: normal; color: var(--pink); }
+  .page-header p { color: var(--muted); font-size: 0.95rem; line-height: 1.7; max-width: 480px; margin: 0 auto; }
+
+  /* DONATION CARDS */
+  .donate-grid { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 3rem; }
+
+  .donate-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 1.5rem; display: flex; align-items: center; gap: 1.25rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .donate-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+  .donate-icon {
+    width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+  }
+  .donate-icon--saweria { background: rgba(255,107,0,0.15); }
+  .donate-icon--dana { background: rgba(0,156,255,0.15); }
+  .donate-icon--gopay { background: rgba(0,168,75,0.15); }
+  .donate-icon--bca { background: rgba(0,100,200,0.15); }
+
+  .donate-info { flex: 1; }
+  .donate-name { font-weight: 700; font-size: 1rem; margin-bottom: 0.2rem; }
+  .donate-sub { color: var(--muted); font-size: 0.85rem; font-family: var(--mono); }
+
+  .donate-btn {
+    background: var(--accent); color: #fff; border: none; border-radius: 8px;
+    padding: 0.65rem 1.25rem; font-family: var(--font); font-size: 0.875rem;
+    font-weight: 600; cursor: pointer; text-decoration: none;
+    transition: background 0.2s; flex-shrink: 0; display: inline-flex;
+    align-items: center; gap: 0.4rem;
+  }
+  .donate-btn:hover { background: var(--accent2); }
+
+  /* COPY FIELD */
+  .copy-field {
+    display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;
+  }
+  .copy-val {
+    font-family: var(--mono); font-size: 0.8rem; color: var(--text);
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    padding: 0.3rem 0.65rem; border-radius: 6px; flex: 1; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .copy-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    font-family: var(--mono); font-size: 0.7rem; padding: 0.3rem 0.6rem;
+    border-radius: 6px; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent2); }
+  .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+  /* THANK YOU */
+  .thankyou {
+    text-align: center; padding: 2.5rem 1.5rem;
+    background: rgba(124,109,250,0.05); border: 1px solid rgba(124,109,250,0.15);
+    border-radius: 14px;
+  }
+  .thankyou-emoji { font-size: 2.5rem; margin-bottom: 1rem; }
+  .thankyou h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; }
+  .thankyou p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 1.25rem 2rem; margin-top: 4rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+    color: var(--muted); font-size: 0.8rem; font-family: var(--mono);
+  }
+  .f-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  @media(max-width:640px) { nav { padding: 1rem; } .nav-links { display: none; } .donate-card { flex-wrap: wrap; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/">Z-HIRUIRA<span>'</span>S</a>
+  <ul class="nav-links">
+    <li><a href="./ruina.html">Ruina AI</a></li>
+    <li><a href="./developer.html">Developer</a></li>
+    <li><a href="./cloud.html">Cloud</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="page-header">
+    <p class="eyebrow">// support</p>
+    <h1>Traktir dengan <em>❤️</em></h1>
+    <p>Semua proyek Z-Hiruira's dibuat dan dirawat sendiri. Kalau kamu merasa terbantu, dukungan kecil apapun sangat berarti buat lanjutin pengembangannya.</p>
+  </div>
+
+  <div class="donate-grid">
+
+    <!-- Saweria -->
+    <div class="donate-card">
+      <div class="donate-icon donate-icon--saweria">☕</div>
+      <div class="donate-info">
+        <div class="donate-name">Saweria</div>
+        <div class="donate-sub">Cara paling gampang — langsung klik</div>
+      </div>
+      <a class="donate-btn" href="https://saweria.co/kadokun" target="_blank">Donasi →</a>
+    </div>
+
+    <!-- Dana -->
+    <div class="donate-card">
+      <div class="donate-icon donate-icon--dana">💙</div>
+      <div class="donate-info">
+        <div class="donate-name">DANA</div>
+        <div class="copy-field">
+          <span class="copy-val" id="dana-num">Isi nomor DANA kamu di sini</span>
+          <button class="copy-btn" onclick="copyText('dana-num', this)">Salin</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GoPay -->
+    <div class="donate-card">
+      <div class="donate-icon donate-icon--gopay">💚</div>
+      <div class="donate-info">
+        <div class="donate-name">GoPay</div>
+        <div class="copy-field">
+          <span class="copy-val" id="gopay-num">Isi nomor GoPay kamu di sini</span>
+          <button class="copy-btn" onclick="copyText('gopay-num', this)">Salin</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BCA -->
+    <div class="donate-card">
+      <div class="donate-icon donate-icon--bca">🏦</div>
+      <div class="donate-info">
+        <div class="donate-name">Transfer Bank (BCA)</div>
+        <div class="copy-field">
+          <span class="copy-val" id="bca-num">No. Rekening BCA kamu</span>
+          <button class="copy-btn" onclick="copyText('bca-num', this)">Salin</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="thankyou">
+    <div class="thankyou-emoji">🙏</div>
+    <h2>Makasih banyak!</h2>
+    <p>Setiap dukungan, sekecil apapun, langsung kepake buat bayar server, domain, dan ngopi pas begadang ngoding. Beneran appreciate banget.</p>
+  </div>
+</main>
+
+<footer>
+  <span class="f-dot"></span>
+  <span>© <span id="yr"></span> Z-Hiruira's</span>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  function copyText(id, btn) {
+    const text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = 'Tersalin!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Salin'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+</body>
+</html>

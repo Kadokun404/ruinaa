@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ruina AI — Z-Hiruira's</title>
+<meta name="description" content="Ngobrol langsung sama Ruina, AI conversational engine milik Z-Hiruira's."/>
+<meta name="theme-color" content="#0a0b14"/>
+
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="48x48" href="./assets/favicon-48.png"/>
+<link rel="icon" href="./assets/favicon.ico"/>
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png"/>
+
+<meta property="og:title" content="Ruina AI — Z-Hiruira's"/>
+<meta property="og:description" content="Ngobrol langsung sama Ruina, AI conversational engine milik Z-Hiruira's."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="./assets/og-image.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="./assets/og-image.png"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0b14; --bg2: #0f1020; --surface: #151628; --border: #1e2035;
+    --accent: #7c6dfa; --accent2: #a78bfa; --text: #e8e9f0; --muted: #6b7280;
+    --green: #4ade80; --font: 'Outfit', sans-serif; --mono: 'JetBrains Mono', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem; background: rgba(10,11,20,0.9); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-brand { font-weight: 800; font-size: 1rem; letter-spacing: 0.08em; color: var(--text); text-decoration: none; }
+  .nav-brand span { color: var(--accent); }
+  .nav-back { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; display: flex; align-items: center; gap: 0.4rem; }
+  .nav-back:hover { color: var(--text); }
+  .nav-links { display: flex; gap: 1.25rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  .page { padding-top: 64px; flex: 1; display: flex; flex-direction: column; }
+
+  /* HEADER */
+  .chat-header {
+    padding: 3rem 2rem 2rem; text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(to bottom, rgba(124,109,250,0.05), transparent);
+  }
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.25);
+    color: var(--green); font-family: var(--mono); font-size: 0.7rem;
+    padding: 0.3rem 0.75rem; border-radius: 99px; margin-bottom: 1.25rem;
+  }
+  .s-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .chat-header h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800; margin-bottom: 0.75rem; }
+  .chat-header h1 em { font-style: normal; color: var(--accent2); }
+  .chat-header p { color: var(--muted); font-size: 0.95rem; max-width: 440px; margin: 0 auto; line-height: 1.65; }
+
+  /* CHAT */
+  .chat-wrap { flex: 1; display: flex; flex-direction: column; max-width: 780px; width: 100%; margin: 0 auto; padding: 0 1rem; }
+  .chat-log {
+    flex: 1; padding: 1.5rem 0; display: flex; flex-direction: column; gap: 1rem;
+    min-height: 400px; max-height: 55vh; overflow-y: auto;
+  }
+  .chat-log::-webkit-scrollbar { width: 4px; }
+  .chat-log::-webkit-scrollbar-track { background: transparent; }
+  .chat-log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .msg { display: flex; gap: 0.75rem; align-items: flex-start; }
+  .msg--user { flex-direction: row-reverse; }
+  .msg__avatar {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem; font-weight: 700;
+  }
+  .msg--bot .msg__avatar { background: rgba(124,109,250,0.2); color: var(--accent2); border: 1px solid rgba(124,109,250,0.3); }
+  .msg--user .msg__avatar { background: rgba(124,109,250,0.15); color: var(--accent); border: 1px solid var(--border); }
+  .msg__bubble {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 0.85rem 1.1rem;
+    font-size: 0.925rem; line-height: 1.65; max-width: 85%;
+  }
+  .msg--user .msg__bubble { background: rgba(124,109,250,0.12); border-color: rgba(124,109,250,0.25); }
+
+  .typing-indicator { display: flex; gap: 4px; padding: 0.4rem 0; }
+  .typing-indicator span {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--muted);
+    animation: bounce 1.2s infinite;
+  }
+  .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+
+  /* INPUT */
+  .chat-input-wrap {
+    padding: 1rem 0 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .chat-form { display: flex; gap: 0.75rem; }
+  .chat-form input {
+    flex: 1; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 0.85rem 1.1rem; color: var(--text);
+    font-family: var(--font); font-size: 0.925rem; outline: none;
+    transition: border-color 0.2s;
+  }
+  .chat-form input:focus { border-color: var(--accent); }
+  .chat-form input::placeholder { color: var(--muted); }
+  .chat-form button {
+    background: var(--accent); color: #fff; border: none; border-radius: 10px;
+    padding: 0.85rem 1.25rem; font-size: 1rem; cursor: pointer;
+    transition: background 0.2s, transform 0.15s; flex-shrink: 0;
+  }
+  .chat-form button:hover { background: var(--accent2); transform: scale(1.05); }
+  .chat-form button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* ENDPOINT INFO */
+  .endpoint-info {
+    max-width: 780px; width: 100%; margin: 0 auto 3rem; padding: 0 1rem;
+  }
+  .endpoint-info h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; color: var(--text); }
+  .code-block {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 1rem 1.25rem; overflow-x: auto;
+  }
+  .code-block pre { font-family: var(--mono); font-size: 0.8rem; color: #a0aec0; line-height: 1.7; white-space: pre; }
+  .hl-key { color: var(--accent2); }
+  .hl-str { color: #68d391; }
+  .endpoint-label { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); margin-bottom: 0.5rem; display: block; }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 1.25rem 2rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+    color: var(--muted); font-size: 0.8rem; font-family: var(--mono);
+  }
+  .f-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+
+  @media(max-width:640px) { nav { padding: 1rem; } .nav-links { display: none; } .chat-log { max-height: 45vh; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/">Z-HIRUIRA<span>'</span>S</a>
+  <ul class="nav-links">
+    <li><a href="./developer.html">Developer</a></li>
+    <li><a href="./cloud.html">Cloud</a></li>
+    <li><a href="./donasi.html">Donasi</a></li>
+  </ul>
+</nav>
+
+<div class="page">
+  <div class="chat-header">
+    <div class="status-pill"><span class="s-dot"></span> ruina · online</div>
+    <h1>Ngobrol sama <em>Ruina</em></h1>
+    <p>AI conversational engine Z-Hiruira's — nanya apa aja, bakal dibantu.</p>
+  </div>
+
+  <div class="chat-wrap">
+    <div class="chat-log" id="chatLog">
+      <div class="msg msg--bot">
+        <div class="msg__avatar">R</div>
+        <div class="msg__bubble">Hai! Aku Ruina 👋 Tanya apa aja, aku siap bantu.</div>
+      </div>
+    </div>
+    <div class="chat-input-wrap">
+      <div class="chat-form" id="chatForm">
+        <input type="text" id="chatInput" placeholder="Tulis pesan ke Ruina..." autocomplete="off" maxlength="600"/>
+        <button type="button" id="sendBtn">→</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="endpoint-info">
+    <span class="endpoint-label">// endpoint publik</span>
+    <h2>Akses via API</h2>
+    <div class="code-block">
+<pre><span class="hl-key">POST</span> https://ruina.z-hiruira.biz.id/api/ruina
+
+<span class="hl-key">Body:</span>
+{
+  <span class="hl-str">"message"</span>: <span class="hl-str">"halo ruina"</span>
+}
+
+<span class="hl-key">Response:</span>
+{
+  <span class="hl-str">"ok"</span>: true,
+  <span class="hl-str">"result"</span>: { <span class="hl-str">"reply"</span>: <span class="hl-str">"Halo! Ada yang bisa dibantu?"</span> },
+  <span class="hl-str">"meta"</span>: { <span class="hl-str">"model"</span>: <span class="hl-str">"ruina-core"</span> }
+}</pre>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="f-dot"></span>
+  <span>© <span id="yr"></span> Z-Hiruira's</span>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  const log = document.getElementById('chatLog');
+  const input = document.getElementById('chatInput');
+  const btn = document.getElementById('sendBtn');
+
+  function addMsg(text, role) {
+    const wrap = document.createElement('div');
+    wrap.className = `msg msg--${role}`;
+    const av = document.createElement('div');
+    av.className = 'msg__avatar';
+    av.textContent = role === 'bot' ? 'R' : 'K';
+    const bubble = document.createElement('div');
+    bubble.className = 'msg__bubble';
+    bubble.textContent = text;
+    wrap.appendChild(av);
+    wrap.appendChild(bubble);
+    log.appendChild(wrap);
+    log.scrollTop = log.scrollHeight;
+    return wrap;
+  }
+
+  function addTyping() {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg msg--bot';
+    wrap.id = 'typing';
+    wrap.innerHTML = `<div class="msg__avatar">R</div><div class="msg__bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+    log.appendChild(wrap);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  async function send() {
+    const msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+    btn.disabled = true;
+    addMsg(msg, 'user');
+    addTyping();
+    try {
+      const res = await fetch('/api/ruina', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg })
+      });
+      const data = await res.json();
+      document.getElementById('typing')?.remove();
+      addMsg(data?.result?.reply || 'Hmm, ada yang error nih.', 'bot');
+    } catch {
+      document.getElementById('typing')?.remove();
+      addMsg('Gagal konek ke Ruina, coba lagi ya.', 'bot');
+    }
+    btn.disabled = false;
+    input.focus();
+  }
+
+  btn.addEventListener('click', send);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
+</script>
+</body>
+</html>

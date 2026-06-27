@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Developer — Z-Hiruira's</title>
+<meta name="description" content="Profil developer di balik Z-Hiruira's dan Ruina AI."/>
+<meta name="theme-color" content="#0a0b14"/>
+
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="48x48" href="./assets/favicon-48.png"/>
+<link rel="icon" href="./assets/favicon.ico"/>
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png"/>
+
+<meta property="og:title" content="Developer — Z-Hiruira's"/>
+<meta property="og:description" content="Profil developer di balik Z-Hiruira's dan Ruina AI."/>
+<meta property="og:type" content="profile"/>
+<meta property="og:image" content="./assets/og-image.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="./assets/og-image.png"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0b14; --surface: #151628; --border: #1e2035;
+    --accent: #7c6dfa; --accent2: #a78bfa; --text: #e8e9f0; --muted: #6b7280;
+    --green: #4ade80; --yellow: #fbbf24;
+    --font: 'Outfit', sans-serif; --mono: 'JetBrains Mono', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem; background: rgba(10,11,20,0.9); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-brand { font-weight: 800; font-size: 1rem; letter-spacing: 0.08em; color: var(--text); text-decoration: none; }
+  .nav-brand span { color: var(--accent); }
+  .nav-back { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+  .nav-back:hover { color: var(--text); }
+  .nav-links { display: flex; gap: 1.25rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  main { padding: 5rem 2rem 4rem; max-width: 860px; margin: 0 auto; }
+
+  .eyebrow { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+
+  /* PROFILE */
+  .profile {
+    display: grid; grid-template-columns: auto 1fr; gap: 2.5rem; align-items: start;
+    margin-bottom: 4rem; padding-bottom: 4rem; border-bottom: 1px solid var(--border);
+  }
+  .profile__photo {
+    width: 120px; height: 120px; border-radius: 16px; overflow: hidden;
+    border: 2px solid var(--border); flex-shrink: 0;
+    background: var(--surface); display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+  }
+  .profile__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .profile__name { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; margin-bottom: 0.25rem; }
+  .profile__role { color: var(--accent2); font-family: var(--mono); font-size: 0.8rem; margin-bottom: 1rem; }
+  .profile__bio { color: var(--muted); font-size: 0.925rem; line-height: 1.7; margin-bottom: 1.5rem; max-width: 520px; }
+
+  .skills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-tag {
+    background: rgba(124,109,250,0.1); border: 1px solid rgba(124,109,250,0.2);
+    color: var(--accent2); font-family: var(--mono); font-size: 0.72rem;
+    padding: 0.3rem 0.7rem; border-radius: 6px;
+  }
+
+  /* META */
+  .meta-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.5rem; }
+  .meta-list li { display: flex; gap: 1rem; font-size: 0.875rem; }
+  .meta-list li span:first-child { color: var(--muted); font-family: var(--mono); font-size: 0.75rem; min-width: 80px; }
+  .meta-live { color: var(--green); }
+
+  /* SOURCE CODE PANEL */
+  .source-section { margin-bottom: 4rem; }
+  .source-section h2 { font-size: 1.35rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .source-section > p { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.6; }
+
+  .repo-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; transition: border-color 0.2s;
+  }
+  .repo-card:hover { border-color: var(--accent); }
+
+  .repo-card__header {
+    padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .repo-card__title { display: flex; align-items: center; gap: 0.6rem; }
+  .repo-icon { font-size: 1.25rem; }
+  .repo-name { font-weight: 700; font-size: 1rem; }
+  .repo-name a { color: var(--text); text-decoration: none; }
+  .repo-name a:hover { color: var(--accent2); }
+  .repo-visibility {
+    font-family: var(--mono); font-size: 0.65rem; color: var(--green);
+    background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2);
+    padding: 0.2rem 0.55rem; border-radius: 4px;
+  }
+
+  .star-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3);
+    color: var(--yellow); font-family: var(--mono); font-size: 0.78rem; font-weight: 600;
+    padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;
+    text-decoration: none; transition: all 0.2s; flex-shrink: 0;
+  }
+  .star-btn:hover { background: rgba(251,191,36,0.2); border-color: var(--yellow); transform: scale(1.03); }
+
+  .repo-card__body { padding: 1.25rem 1.5rem; }
+  .repo-desc { color: var(--muted); font-size: 0.875rem; line-height: 1.65; margin-bottom: 1.25rem; }
+
+  .repo-meta { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+  .repo-meta-item { display: flex; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+  .lang-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .lang-js { background: #f7df1e; }
+
+  .repo-card__footer {
+    padding: 1rem 1.5rem; border-top: 1px solid var(--border);
+    display: flex; gap: 0.75rem; flex-wrap: wrap;
+  }
+  .repo-link {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    color: var(--accent2); text-decoration: none; font-size: 0.85rem; font-weight: 600;
+    transition: color 0.2s;
+  }
+  .repo-link:hover { color: #fff; }
+
+  /* STATS placeholder */
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 4rem; }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 1.25rem; text-align: center;
+  }
+  .stat-num { font-size: 1.75rem; font-weight: 800; color: var(--accent2); display: block; }
+  .stat-label { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin-top: 0.25rem; }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 1.25rem 2rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+    color: var(--muted); font-size: 0.8rem; font-family: var(--mono);
+  }
+  .f-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  @media(max-width:640px) {
+    nav { padding: 1rem; }
+    .nav-links { display: none; }
+    .profile { grid-template-columns: 1fr; gap: 1.5rem; }
+    .profile__photo { width: 90px; height: 90px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .repo-card__header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/">Z-HIRUIRA<span>'</span>S</a>
+  <ul class="nav-links">
+    <li><a href="./ruina.html">Ruina AI</a></li>
+    <li><a href="./cloud.html">Cloud</a></li>
+    <li><a href="./donasi.html">Donasi</a></li>
+  </ul>
+</nav>
+
+<main>
+  <p class="eyebrow">// developer profile</p>
+
+  <div class="profile">
+    <div class="profile__photo">
+      <img src="./assets/Developer-Photo.png" alt="Developer" onerror="this.style.display='none';this.parentElement.textContent='👨‍💻'"/>
+    </div>
+    <div>
+      <h1 class="profile__name">Z-Hiruira's Developer</h1>
+      <p class="profile__role">@Kadokun404 · Fullstack & Bot Developer</p>
+      <p class="profile__bio">
+        Membangun dan merawat ekosistem Z-Hiruira's dari nol — landing page, serverless API, AI integration, sampai WhatsApp bot. Suka ngulik hal baru dan bikin sesuatu yang bisa langsung dipakai orang.
+      </p>
+      <div class="skills">
+        <span class="skill-tag">JavaScript / Node.js</span>
+        <span class="skill-tag">Vercel Serverless</span>
+        <span class="skill-tag">REST API Design</span>
+        <span class="skill-tag">WhatsApp Bot (Baileys)</span>
+        <span class="skill-tag">Prompt Engineering</span>
+        <span class="skill-tag">UI / Frontend</span>
+        <span class="skill-tag">Telegram Bot API</span>
+      </div>
+      <ul class="meta-list">
+        <li><span>status</span><span class="meta-live">● aktif</span></li>
+        <li><span>lokasi</span><span>Indonesia 🇮🇩</span></li>
+        <li><span>github</span><span><a href="https://github.com/Kadokun404" target="_blank" style="color:var(--accent2);text-decoration:none">Kadokun404</a></span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-num">∞</span>
+      <span class="stat-label">uptime ruina</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">1</span>
+      <span class="stat-label">AI deployed</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num">🔥</span>
+      <span class="stat-label">terus diupdate</span>
+    </div>
+  </div>
+
+  <!-- SOURCE CODE PANEL -->
+  <div class="source-section">
+    <p class="eyebrow">// source code</p>
+    <h2>Proyek Open Source</h2>
+    <p>Kode dasar Ruina tersedia publik — bisa dipelajari, di-fork, atau dipakai sebagai base buat proyek kamu sendiri. Kalau bermanfaat, kasih star ya!</p>
+
+    <div class="repo-card">
+      <div class="repo-card__header">
+        <div class="repo-card__title">
+          <span class="repo-icon">📦</span>
+          <div class="repo-name">
+            <a href="https://github.com/Kadokun404/base-ruina-md" target="_blank">Kadokun404 / base-ruina-md</a>
+          </div>
+          <span class="repo-visibility">public</span>
+        </div>
+        <a class="star-btn" href="https://github.com/Kadokun404/base-ruina-md" target="_blank">
+          ⭐ Star
+        </a>
+      </div>
+      <div class="repo-card__body">
+        <p class="repo-desc">
+          Base code Ruina — WhatsApp bot berbasis Baileys dengan integrasi AI. Bisa langsung dipakai sebagai starting point untuk bot WA kamu sendiri dengan kemampuan conversational AI.
+        </p>
+        <div class="repo-meta">
+          <div class="repo-meta-item">
+            <span class="lang-dot lang-js"></span>
+            JavaScript
+          </div>
+          <div class="repo-meta-item">⭐ Star kalau bermanfaat!</div>
+          <div class="repo-meta-item">🔓 MIT License</div>
+        </div>
+      </div>
+      <div class="repo-card__footer">
+        <a class="repo-link" href="https://github.com/Kadokun404/base-ruina-md" target="_blank">
+          → Lihat di GitHub
+        </a>
+        <a class="repo-link" href="https://github.com/Kadokun404/base-ruina-md/archive/refs/heads/main.zip" target="_blank">
+          ↓ Download ZIP
+        </a>
+        <a class="repo-link" href="https://github.com/Kadokun404/base-ruina-md/fork" target="_blank">
+          ⑂ Fork
+        </a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span class="f-dot"></span>
+  <span>© <span id="yr"></span> Z-Hiruira's</span>
+</footer>
+
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>

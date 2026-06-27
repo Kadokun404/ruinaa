@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cloud — Z-Hiruira's</title>
+<meta name="description" content="Upload dan share file gratis — powered by Telegram."/>
+<meta name="theme-color" content="#0a0b14"/>
+
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="48x48" href="./assets/favicon-48.png"/>
+<link rel="icon" href="./assets/favicon.ico"/>
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png"/>
+
+<meta property="og:title" content="Cloud — Z-Hiruira's"/>
+<meta property="og:description" content="Upload dan share file gratis — powered by Telegram."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="./assets/og-image.png"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="./assets/og-image.png"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0b14; --surface: #151628; --border: #1e2035;
+    --accent: #7c6dfa; --accent2: #a78bfa; --text: #e8e9f0; --muted: #6b7280;
+    --green: #4ade80; --red: #f87171;
+    --font: 'Outfit', sans-serif; --mono: 'JetBrains Mono', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; display: flex; flex-direction: column; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem; border-bottom: 1px solid var(--border);
+    background: rgba(10,11,20,0.9); backdrop-filter: blur(12px);
+  }
+  .nav-brand { font-weight: 800; font-size: 1rem; letter-spacing: 0.08em; color: var(--text); text-decoration: none; }
+  .nav-brand span { color: var(--accent); }
+  .nav-links { display: flex; gap: 1.25rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  main { flex: 1; padding-top: 64px; }
+  .container { max-width: 700px; margin: 0 auto; width: 100%; padding: 3rem 1.5rem 4rem; }
+
+  .eyebrow { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.75rem; }
+  .page-title { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800; margin-bottom: 0.5rem; }
+  .page-title em { font-style: normal; color: var(--accent2); }
+  .page-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.6; }
+  .limit-note { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin-top: -1.25rem; margin-bottom: 2.25rem; }
+
+  /* DROP ZONE */
+  .dropzone {
+    border: 2px dashed var(--border); border-radius: 16px;
+    padding: 3rem 2rem; text-align: center; cursor: pointer;
+    transition: all 0.25s; background: var(--surface); margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .dropzone:hover, .dropzone.drag { border-color: var(--accent); background: rgba(124,109,250,0.05); }
+  .dropzone.drag { transform: scale(1.01); }
+  .dz-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .dz-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.4rem; }
+  .dz-sub { color: var(--muted); font-size: 0.85rem; }
+  .dz-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+  /* FILE PREVIEW */
+  .file-preview {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1rem 1.25rem; display: none; align-items: center; gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .file-preview.show { display: flex; }
+  .file-icon { font-size: 1.75rem; flex-shrink: 0; }
+  .file-info { flex: 1; min-width: 0; }
+  .file-name { font-weight: 600; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .file-size { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+  .file-remove { background: transparent; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; transition: color 0.2s; }
+  .file-remove:hover { color: var(--red); }
+
+  /* UPLOAD BTN */
+  .upload-btn {
+    width: 100%; padding: 1rem; background: var(--accent); color: #fff;
+    border: none; border-radius: 10px; font-family: var(--font); font-size: 1rem;
+    font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.15s;
+    display: none;
+  }
+  .upload-btn.show { display: block; }
+  .upload-btn:hover { background: var(--accent2); }
+  .upload-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  /* PROGRESS */
+  .progress-wrap { display: none; margin-bottom: 1.5rem; }
+  .progress-wrap.show { display: block; }
+  .progress-label { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; width: 0%; transition: width 0.2s; }
+
+  /* RESULT */
+  .result-box {
+    background: rgba(74,222,128,0.05); border: 1px solid rgba(74,222,128,0.2);
+    border-radius: 12px; padding: 1.5rem; display: none; margin-top: 1.5rem;
+  }
+  .result-box.show { display: block; }
+  .result-title { font-weight: 700; color: var(--green); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+  .result-url {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 0.75rem 1rem; font-family: var(--mono); font-size: 0.8rem;
+    color: var(--accent2); overflow-x: auto; white-space: nowrap;
+    margin-bottom: 0.75rem; display: block;
+  }
+  .result-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .btn-copy, .btn-open {
+    padding: 0.6rem 1.1rem; border-radius: 8px; font-family: var(--font);
+    font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
+    border: none;
+  }
+  .btn-copy { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .btn-copy:hover { border-color: var(--accent); color: var(--accent2); }
+  .btn-copy.copied { border-color: var(--green); color: var(--green); }
+  .btn-open { background: var(--accent); border: 1px solid var(--accent); color: #fff; }
+  .btn-open:hover { background: var(--accent2); }
+
+  /* ERROR */
+  .error-box {
+    background: rgba(248,113,113,0.05); border: 1px solid rgba(248,113,113,0.2);
+    border-radius: 12px; padding: 1rem 1.25rem; display: none; margin-top: 1rem;
+    color: var(--red); font-size: 0.875rem;
+  }
+  .error-box.show { display: block; }
+
+  /* HISTORY */
+  .history-section { margin-top: 3rem; }
+  .history-label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+  .history-list { display: flex; flex-direction: column; gap: 0.6rem; }
+  .history-item {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 0.85rem 1rem; display: flex; align-items: center; gap: 0.75rem;
+  }
+  .history-name { flex: 1; min-width: 0; font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .history-copy { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: var(--mono); font-size: 0.65rem; padding: 0.25rem 0.55rem; border-radius: 5px; cursor: pointer; transition: all 0.2s; }
+  .history-copy:hover { border-color: var(--accent); color: var(--accent2); }
+  .history-empty { color: var(--muted); font-size: 0.875rem; text-align: center; padding: 1.5rem; }
+
+  /* API DOCS PANEL */
+  .api-section { margin-top: 4rem; }
+  .api-section h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .api-section > p { color: var(--muted); font-size: 0.875rem; margin-bottom: 1.5rem; line-height: 1.6; }
+
+  .tabs { display: flex; gap: 0.4rem; margin-bottom: 0; border-bottom: 1px solid var(--border); }
+  .tab-btn {
+    background: transparent; border: none; color: var(--muted); font-family: var(--mono);
+    font-size: 0.78rem; padding: 0.65rem 1rem; cursor: pointer; border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s; margin-bottom: -1px;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent2); border-color: var(--accent); }
+
+  .code-panel {
+    background: var(--surface); border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 12px 12px; overflow: hidden;
+  }
+  .code-panel-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.6rem 1rem; border-bottom: 1px solid var(--border);
+  }
+  .code-panel-label { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
+  .code-copy-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    font-family: var(--mono); font-size: 0.68rem; padding: 0.25rem 0.6rem;
+    border-radius: 5px; cursor: pointer; transition: all 0.2s;
+  }
+  .code-copy-btn:hover { border-color: var(--accent); color: var(--accent2); }
+  .code-copy-btn.copied { border-color: var(--green); color: var(--green); }
+  .code-block { padding: 1rem 1.25rem; overflow-x: auto; }
+  .code-block pre { font-family: var(--mono); font-size: 0.78rem; color: #c3c7d9; line-height: 1.7; white-space: pre; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .hl-com { color: #6b7280; }
+  .hl-key { color: #c792ea; }
+  .hl-str { color: #68d391; }
+  .hl-fn  { color: #82aaff; }
+  .hl-prop{ color: var(--accent2); }
+
+  .endpoint-table { width: 100%; margin-top: 1.5rem; font-size: 0.82rem; border-collapse: collapse; }
+  .endpoint-table th, .endpoint-table td { text-align: left; padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border); }
+  .endpoint-table th { color: var(--muted); font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .endpoint-table td { color: var(--text); }
+  .method-pill { font-family: var(--mono); font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px; }
+  .method-post { background: rgba(124,109,250,0.15); color: var(--accent2); }
+  .method-get { background: rgba(74,222,128,0.15); color: var(--green); }
+  .endpoint-path { font-family: var(--mono); font-size: 0.8rem; color: var(--text); }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 1.25rem 2rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+    color: var(--muted); font-size: 0.8rem; font-family: var(--mono);
+  }
+  .f-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  @media(max-width:640px) { nav { padding: 1rem; } .nav-links { display: none; } .container { padding: 2rem 1rem 3rem; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/">Z-HIRUIRA<span>'</span>S</a>
+  <ul class="nav-links">
+    <li><a href="./ruina.html">Ruina AI</a></li>
+    <li><a href="./developer.html">Developer</a></li>
+    <li><a href="./donasi.html">Donasi</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="container">
+    <p class="eyebrow">// cloud storage</p>
+    <h1 class="page-title">Upload & <em>Share</em></h1>
+    <p class="page-sub">Upload file apapun, dapat link langsung yang bisa dibagikan ke siapapun.</p>
+    <p class="limit-note">⚡ Maks 20MB per file · Powered by Telegram · Gratis</p>
+
+    <div class="dropzone" id="dropzone">
+      <input type="file" class="dz-input" id="fileInput"/>
+      <div class="dz-icon">☁️</div>
+      <div class="dz-title">Klik atau drop file di sini</div>
+      <div class="dz-sub">Semua tipe file didukung · Maks 20MB</div>
+    </div>
+
+    <div class="file-preview" id="filePreview">
+      <span class="file-icon" id="fileIcon">📄</span>
+      <div class="file-info">
+        <div class="file-name" id="fileName">—</div>
+        <div class="file-size" id="fileSize">—</div>
+      </div>
+      <button class="file-remove" id="fileRemove" aria-label="Hapus file">✕</button>
+    </div>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-label"><span id="progressLabel">Mengupload...</span><span id="progressPct">0%</span></div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <button class="upload-btn" id="uploadBtn">Upload File →</button>
+
+    <div class="error-box" id="errorBox"></div>
+
+    <div class="result-box" id="resultBox">
+      <div class="result-title">✅ Upload berhasil!</div>
+      <code class="result-url" id="resultUrl"></code>
+      <div class="result-actions">
+        <button class="btn-copy" id="copyBtn">📋 Salin Link</button>
+        <a class="btn-open" id="openBtn" href="#" target="_blank">↗ Buka File</a>
+      </div>
+    </div>
+
+    <div class="history-section">
+      <div class="history-label">// riwayat upload (sesi ini)</div>
+      <div class="history-list" id="historyList">
+        <div class="history-empty">Belum ada file yang diupload.</div>
+      </div>
+    </div>
+
+    <!-- ===== API DOCS / IMPORT PANEL ===== -->
+    <div class="api-section">
+      <p class="eyebrow">// developer</p>
+      <h2>Pakai lewat API</h2>
+      <p>Endpoint ini publik, bisa dipanggil dari luar browser juga — dari script Node.js, bot, atau aplikasi kamu sendiri. Berikut endpoint yang tersedia dan contoh pemakaiannya.</p>
+
+      <table class="endpoint-table">
+        <tr><th>Method</th><th>Path</th><th>Keterangan</th></tr>
+        <tr>
+          <td><span class="method-pill method-post">POST</span></td>
+          <td class="endpoint-path">/api/upload</td>
+          <td>Upload file (multipart/form-data, field <code>file</code>)</td>
+        </tr>
+        <tr>
+          <td><span class="method-pill method-get">GET</span></td>
+          <td class="endpoint-path">/api/file/:id</td>
+          <td>Redirect ke file asli berdasarkan id dari hasil upload</td>
+        </tr>
+      </table>
+
+      <div class="tabs" style="margin-top:2rem">
+        <button class="tab-btn active" data-tab="nodefetch">Node.js (node-fetch)</button>
+        <button class="tab-btn" data-tab="curl">cURL</button>
+        <button class="tab-btn" data-tab="browser">Browser (fetch)</button>
+        <button class="tab-btn" data-tab="response">Contoh Response</button>
+      </div>
+
+      <div class="code-panel">
+
+        <div class="tab-content active" data-tab="nodefetch">
+          <div class="code-panel-head">
+            <span class="code-panel-label">upload.mjs</span>
+            <button class="code-copy-btn" data-target="code-nodefetch">Salin</button>
+          </div>
+          <div class="code-block"><pre id="code-nodefetch"><span class="hl-com">// npm install node-fetch form-data</span>
+<span class="hl-key">import</span> fetch <span class="hl-key">from</span> <span class="hl-str">"node-fetch"</span>;
+<span class="hl-key">import</span> FormData <span class="hl-key">from</span> <span class="hl-str">"form-data"</span>;
+<span class="hl-key">import</span> fs <span class="hl-key">from</span> <span class="hl-str">"fs"</span>;
+
+<span class="hl-key">const</span> form = <span class="hl-key">new</span> <span class="hl-fn">FormData</span>();
+form.<span class="hl-fn">append</span>(<span class="hl-str">"file"</span>, fs.<span class="hl-fn">createReadStream</span>(<span class="hl-str">"./foto.png"</span>));
+
+<span class="hl-key">const</span> res = <span class="hl-key">await</span> <span class="hl-fn">fetch</span>(<span class="hl-str">"https://ruina.z-hiruira.biz.id/api/upload"</span>, {
+  method: <span class="hl-str">"POST"</span>,
+  body: form,
+  <span class="hl-com">// jangan set Content-Type manual, form-data sudah menentukan boundary-nya sendiri</span>
+  headers: form.<span class="hl-fn">getHeaders</span>(),
+});
+
+<span class="hl-key">const</span> data = <span class="hl-key">await</span> res.<span class="hl-fn">json</span>();
+
+<span class="hl-key">if</span> (!data.<span class="hl-prop">ok</span>) {
+  <span class="hl-key">throw</span> <span class="hl-key">new</span> <span class="hl-fn">Error</span>(data.<span class="hl-prop">error</span>);
+}
+
+<span class="hl-fn">console</span>.<span class="hl-fn">log</span>(<span class="hl-str">"Link file:"</span>, data.<span class="hl-prop">url</span>);
+<span class="hl-fn">console</span>.<span class="hl-fn">log</span>(<span class="hl-str">"Ukuran:"</span>, data.<span class="hl-prop">size</span>, <span class="hl-str">"bytes"</span>);</pre></div>
+        </div>
+
+        <div class="tab-content" data-tab="curl">
+          <div class="code-panel-head">
+            <span class="code-panel-label">terminal</span>
+            <button class="code-copy-btn" data-target="code-curl">Salin</button>
+          </div>
+          <div class="code-block"><pre id="code-curl"><span class="hl-com"># upload file</span>
+curl -X POST https://ruina.z-hiruira.biz.id/api/upload \
+  -F <span class="hl-str">"file=@./foto.png"</span>
+
+<span class="hl-com"># hasilnya berupa JSON, ambil field "url" buat akses filenya</span></pre></div>
+        </div>
+
+        <div class="tab-content" data-tab="browser">
+          <div class="code-panel-head">
+            <span class="code-panel-label">browser console / frontend</span>
+            <button class="code-copy-btn" data-target="code-browser">Salin</button>
+          </div>
+          <div class="code-block"><pre id="code-browser"><span class="hl-com">// dari &lt;input type="file"&gt; di HTML</span>
+<span class="hl-key">const</span> form = <span class="hl-key">new</span> <span class="hl-fn">FormData</span>();
+form.<span class="hl-fn">append</span>(<span class="hl-str">"file"</span>, inputEl.<span class="hl-prop">files</span>[0]);
+
+<span class="hl-key">const</span> res = <span class="hl-key">await</span> <span class="hl-fn">fetch</span>(<span class="hl-str">"/api/upload"</span>, { method: <span class="hl-str">"POST"</span>, body: form });
+<span class="hl-key">const</span> data = <span class="hl-key">await</span> res.<span class="hl-fn">json</span>();
+
+<span class="hl-fn">console</span>.<span class="hl-fn">log</span>(data.<span class="hl-prop">url</span>); <span class="hl-com">// link file siap dibagikan</span></pre></div>
+        </div>
+
+        <div class="tab-content" data-tab="response">
+          <div class="code-panel-head">
+            <span class="code-panel-label">response — 200 OK</span>
+            <button class="code-copy-btn" data-target="code-response">Salin</button>
+          </div>
+          <div class="code-block"><pre id="code-response">{
+  <span class="hl-str">"ok"</span>: <span class="hl-key">true</span>,
+  <span class="hl-str">"filename"</span>: <span class="hl-str">"foto.png"</span>,
+  <span class="hl-str">"size"</span>: 482311,
+  <span class="hl-str">"url"</span>: <span class="hl-str">"https://ruina.z-hiruira.biz.id/api/file/AgADBQA..."</span>,
+  <span class="hl-str">"fileId"</span>: <span class="hl-str">"AgADBQA..."</span>
+}
+
+<span class="hl-com">// kalau gagal:</span>
+{ <span class="hl-str">"ok"</span>: <span class="hl-key">false</span>, <span class="hl-str">"error"</span>: <span class="hl-str">"pesan errornya di sini"</span> }</pre></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <span class="f-dot"></span>
+  <span>© <span id="yr"></span> Z-Hiruira's</span>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  let selectedFile = null;
+  const uploadHistory = [];
+
+  const dropzone = document.getElementById('dropzone');
+  const fileInput = document.getElementById('fileInput');
+  const filePreview = document.getElementById('filePreview');
+  const uploadBtn = document.getElementById('uploadBtn');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressFill = document.getElementById('progressFill');
+  const progressPct = document.getElementById('progressPct');
+  const progressLabel = document.getElementById('progressLabel');
+  const resultBox = document.getElementById('resultBox');
+  const resultUrl = document.getElementById('resultUrl');
+  const errorBox = document.getElementById('errorBox');
+  const openBtn = document.getElementById('openBtn');
+
+  const icons = { image: '🖼️', video: '🎬', audio: '🎵', pdf: '📕', zip: '🗜️', default: '📄' };
+
+  function getIcon(file) {
+    if (file.type.startsWith('image/')) return icons.image;
+    if (file.type.startsWith('video/')) return icons.video;
+    if (file.type.startsWith('audio/')) return icons.audio;
+    if (file.type === 'application/pdf') return icons.pdf;
+    if (file.name.match(/\.(zip|rar|7z|tar|gz)$/i)) return icons.zip;
+    return icons.default;
+  }
+
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+  }
+
+  function setFile(file) {
+    if (file.size > 20 * 1024 * 1024) {
+      showError('File terlalu besar. Maksimal 20MB.');
+      return;
+    }
+    selectedFile = file;
+    document.getElementById('fileIcon').textContent = getIcon(file);
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('fileSize').textContent = formatSize(file.size);
+    filePreview.classList.add('show');
+    uploadBtn.classList.add('show');
+    resultBox.classList.remove('show');
+    errorBox.classList.remove('show');
+  }
+
+  function showError(msg) {
+    errorBox.textContent = '❌ ' + msg;
+    errorBox.classList.add('show');
+  }
+
+  fileInput.addEventListener('change', e => { if (e.target.files[0]) setFile(e.target.files[0]); });
+
+  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag'); });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag'));
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault(); dropzone.classList.remove('drag');
+    if (e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);
+  });
+
+  document.getElementById('fileRemove').addEventListener('click', () => {
+    selectedFile = null;
+    fileInput.value = '';
+    filePreview.classList.remove('show');
+    uploadBtn.classList.remove('show');
+    resultBox.classList.remove('show');
+    errorBox.classList.remove('show');
+  });
+
+  // Upload pakai XHR supaya progress bar benar-benar merepresentasikan progres asli.
+  function uploadFile(file) {
+    return new Promise((resolve, reject) => {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/upload');
+
+      xhr.upload.onprogress = (e) => {
+        if (!e.lengthComputable) return;
+        const pct = Math.round((e.loaded / e.total) * 100);
+        progressFill.style.width = pct + '%';
+        progressPct.textContent = pct + '%';
+      };
+
+      xhr.onload = () => {
+        try {
+          const data = JSON.parse(xhr.responseText);
+          if (xhr.status >= 200 && xhr.status < 300 && data.ok) {
+            resolve(data);
+          } else {
+            reject(new Error(data.error || 'Upload gagal.'));
+          }
+        } catch {
+          reject(new Error('Respons server tidak valid.'));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Gagal konek ke server.'));
+      xhr.send(formData);
+    });
+  }
+
+  uploadBtn.addEventListener('click', async () => {
+    if (!selectedFile) return;
+
+    uploadBtn.disabled = true;
+    progressWrap.classList.add('show');
+    progressLabel.textContent = 'Mengupload...';
+    progressFill.style.width = '0%';
+    progressPct.textContent = '0%';
+    errorBox.classList.remove('show');
+    resultBox.classList.remove('show');
+
+    try {
+      const data = await uploadFile(selectedFile);
+
+      progressLabel.textContent = 'Selesai!';
+      resultUrl.textContent = data.url;
+      openBtn.href = data.url;
+      resultBox.classList.add('show');
+
+      uploadHistory.unshift({ name: selectedFile.name, url: data.url, size: formatSize(selectedFile.size) });
+      renderHistory();
+
+      setTimeout(() => { progressWrap.classList.remove('show'); progressFill.style.width = '0%'; }, 1200);
+    } catch (err) {
+      progressWrap.classList.remove('show');
+      showError(err.message);
+    }
+
+    uploadBtn.disabled = false;
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    const url = resultUrl.textContent;
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.getElementById('copyBtn');
+      const original = btn.textContent;
+      btn.textContent = '✅ Tersalin!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 2000);
+    });
+  });
+
+  function renderHistory() {
+    const list = document.getElementById('historyList');
+    if (uploadHistory.length === 0) {
+      list.innerHTML = '<div class="history-empty">Belum ada file yang diupload.</div>';
+      return;
+    }
+    list.innerHTML = uploadHistory.map((item, i) => `
+      <div class="history-item">
+        <span class="history-name" title="${item.url}">${item.name} <span style="color:var(--muted);font-size:0.72rem">(${item.size})</span></span>
+        <button class="history-copy" data-index="${i}">Salin</button>
+      </div>
+    `).join('');
+    list.querySelectorAll('.history-copy').forEach(btn => {
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(uploadHistory[Number(btn.dataset.index)].url);
+        btn.textContent = 'Tersalin!';
+        setTimeout(() => { btn.textContent = 'Salin'; }, 1500);
+      });
+    });
+  }
+
+  // ===== Tabs panel API docs =====
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.dataset.tab === tab));
+    });
+  });
+
+  // ===== Copy code blocks =====
+  document.querySelectorAll('.code-copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.target);
+      const text = target.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const original = btn.textContent;
+        btn.textContent = 'Tersalin!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1500);
+      });
+    });
+  });
+</script>
+</body>
+</html>
